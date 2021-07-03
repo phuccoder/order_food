@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect } from 'react'
+import React, { useState, useReducer, useEffect , FC} from 'react'
 
 import { 
     View, 
@@ -9,10 +9,22 @@ import {
 } from 'react-native'
 
 import * as Location from 'expo-location'
+import { useNavigation } from '../utils'
+import { ApplicationState, onUpdateLocation, UserState } from '../redux'
+import { connect } from 'react-redux'
 
 const screenWidth = Dimensions.get('screen').width
 
-export const Landing = () => {
+interface LandingProps {
+    userReducer: UserState,
+    onUpdateLocation: Function
+}
+
+const _Landing: FC<LandingProps> = (props) => {
+
+    const { navigate } = useNavigation()
+
+    const { userReducer, onUpdateLocation } = props
 
     const [errorMsg, setErrorMsg] = useState('')
     const [address, setAddress] = useState<Location.Address>()
@@ -36,15 +48,21 @@ export const Landing = () => {
 
                 for (let item of addressResponse) {
                     setAddress(item)
+                    onUpdateLocation(item)
                     let currentAddress = `${item.name},${item.street}, ${item.postalCode}, ${item.country}`
                     setDisplayAddress(currentAddress)
+                    if (currentAddress.length > 0) {
+                        setTimeout(() => {
+                            navigate('homeStack')
+                        }, 2000)
+                    }
                     return
                 }
             }
             else {
                 //notify user something went wrong with location
             }
-        })
+        })()
     }, [])
 
     return (
@@ -109,3 +127,9 @@ const styles = StyleSheet.create({
         flex: 1,
     }
 })
+
+const mapToStateProps = (state: ApplicationState) => ({
+    userReducer: state.userReducer
+})
+
+export const Landing = connect(mapToStateProps, { onUpdateLocation })(_Landing)
