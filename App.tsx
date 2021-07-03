@@ -8,16 +8,17 @@ import {
 } from 'react-native'
 
 import { Home, Landing } from './src/screens'
+import { Provider } from 'react-redux'
 
 import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
+import { store } from './src/redux'
 
 const switchNavigator = createSwitchNavigator({
   landingStack: {
     screen: createStackNavigator({
       Landing: Landing
-      // search address screen
     }, {
       defaultNavigationOptions: {
         headerShown: false
@@ -25,7 +26,6 @@ const switchNavigator = createSwitchNavigator({
     })
   },
   homeStack: createBottomTabNavigator({
-    // home tab icon
     home: {
       screen: createStackNavigator({
         HomePage: Home
@@ -38,7 +38,6 @@ const switchNavigator = createSwitchNavigator({
         }
       }
     },
-    // Home tab Icon
     Offer: {
       screen: createStackNavigator({
         OfferPage: Home
@@ -51,8 +50,6 @@ const switchNavigator = createSwitchNavigator({
         }
       }
     },
-
-     // Home tab Icon
     Cart: {
       screen: createStackNavigator({
         CartPage: Home,
@@ -70,7 +67,6 @@ const switchNavigator = createSwitchNavigator({
         }
       }
     },
-     // Home tab Icon
     Account: {
       screen: createStackNavigator({
         AccountPage: Home,
@@ -91,8 +87,10 @@ const AppNavigation = createAppContainer(switchNavigator);
 
 export default function App() {
   return (
-    <AppNavigation />
-  );
+    <Provider store={store}>
+      <AppNavigation />
+    </Provider>
+  )
 }
 
 const styles = StyleSheet.create({
