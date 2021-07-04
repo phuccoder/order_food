@@ -1,15 +1,18 @@
-import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { 
-  StyleSheet, 
-  Text, 
-  View,
+  StyleSheet,
   Image
 } from 'react-native'
 
-import { Home, Landing } from './src/screens'
-import { Provider } from 'react-redux'
+import { 
+  FoodDetailScreen,
+  HomeScreen,
+  LandingScreen,
+  RestaurantScreen,
+  SearchScreen 
+} from './src/screens'
 
+import { Provider } from 'react-redux'
 import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
@@ -18,7 +21,7 @@ import { store } from './src/redux'
 const switchNavigator = createSwitchNavigator({
   landingStack: {
     screen: createStackNavigator({
-      Landing: Landing
+      Landing: LandingScreen
     }, {
       defaultNavigationOptions: {
         headerShown: false
@@ -26,9 +29,16 @@ const switchNavigator = createSwitchNavigator({
     })
   },
   homeStack: createBottomTabNavigator({
-    home: {
+    Home: {
       screen: createStackNavigator({
-        HomePage: Home
+        HomePage: HomeScreen,
+        SearchPage: SearchScreen,
+        RestaurantPage: RestaurantScreen,
+        FoodDetailPage: FoodDetailScreen
+      }, {
+        defaultNavigationOptions: {
+          headerShown: false
+        }
       }),
       navigationOptions: {
         tabBarIcon: ({ focused, tintColor }) => {
@@ -40,7 +50,11 @@ const switchNavigator = createSwitchNavigator({
     },
     Offer: {
       screen: createStackNavigator({
-        OfferPage: Home
+        OfferPage: HomeScreen
+      }, {
+        defaultNavigationOptions: {
+          headerShown: false
+        }
       }),
       navigationOptions: {
         tabBarIcon: ({ focused, tintColor}) => {
@@ -52,8 +66,8 @@ const switchNavigator = createSwitchNavigator({
     },
     Cart: {
       screen: createStackNavigator({
-        CartPage: Home,
-        LoginPage: Home
+        CartPage: HomeScreen,
+        LoginPage: HomeScreen
       }, {
         defaultNavigationOptions: {
           headerShown: false
@@ -69,8 +83,12 @@ const switchNavigator = createSwitchNavigator({
     },
     Account: {
       screen: createStackNavigator({
-        AccountPage: Home,
-        LoginPage: Home
+        AccountPage: HomeScreen,
+        LoginPage: HomeScreen
+      }, {
+        defaultNavigationOptions: {
+          headerShown: false
+        }
       }),
       navigationOptions: {
         tabBarIcon: ({ focused, tintColor}) => {
