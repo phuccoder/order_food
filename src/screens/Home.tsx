@@ -1,12 +1,14 @@
 import React, { useState, useReducer, useEffect, FC } from 'react'
-
 import { 
     View, 
     Text, 
-    StyleSheet
+    StyleSheet,
+    ScrollView,
+    FlatList
 } from 'react-native'
 
 import { connect } from 'react-redux'
+import { SearchBar, ButtonWithIcon, RestaurantCard, CategoryCard } from '../components'
 
 import { 
     onAvailability, 
@@ -18,6 +20,7 @@ import {
     FoodModel 
 } from '../redux'
 
+import { useNavigation } from '../utils'
 
 interface HomeProps{
     userReducer: UserState,
@@ -28,8 +31,11 @@ interface HomeProps{
 
 const _Home: FC<HomeProps> = (props) => {
 
+    const { navigate } = useNavigation()
+
     const { location } = props.userReducer
     const { availability } = props.shoppingReducer
+    const { categories, foods, restaurants } = availability
 
     useEffect(() => {
         props.onAvailability(location.postalCode)
@@ -38,19 +44,81 @@ const _Home: FC<HomeProps> = (props) => {
         }, 1000 )
     }, [])
 
+    const onTapRestaurant = (item: Restaurant) => {
+        navigate('RestaurantPage', { restaurant: item})
+    }
+
+    const onTapFood = (item: FoodModel) => {    
+        navigate('FoodDetailPage', { food: item})
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.navigation}> 
-                <View style={styles.topLocation}>
-                    <Text>
-                        {`${location.name}, ${location.street}, ${location.city}`}
-                    </Text>
+                <View style={styles.location}>
+                    <ButtonWithIcon 
+                        onTap={() => {}}
+                        icon={require('../images/delivery_icon.png')} 
+                        width={20} 
+                        height={20} 
+                    />
+                    <Text>{`${location.name},${location.street},${location.city}`} </Text> 
+                    <ButtonWithIcon 
+                        onTap={() => {}}
+                        icon={require('../images/edit_icon.png')} 
+                        width={20} 
+                        height={20} 
+                    />
+                </View>
+                <View style={styles.viewSort}>
+                    <SearchBar 
+                        didTouch={() => {
+                            navigate('SearchPage')
+                        }}
+                        onTextChange={() => {}}
+                    />
+                    <ButtonWithIcon 
+                        onTap={() => {}}
+                        icon={require('../images/hambar.png')} 
+                        width={50} 
+                        height={40} 
+                    />
                 </View>
             </View>
             <View style={styles.body}>
-                <Text>
-                    Home screen
-                </Text>
+                <ScrollView>
+                    <FlatList 
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        data={categories}
+                        renderItem ={({ item }) =>  <CategoryCard item={item} onTap={() => { alert('Category tapped') }} /> } 
+                        keyExtractor={(item) => `${item.id}`}
+                    />
+                    <View>
+                        <Text style={{fontSize: 25, fontWeight: '600', color: '#f15b5d', marginLeft: 20 }}> 
+                            Top Restaurants
+                        </Text>
+                    </View>
+                    <FlatList 
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        data={restaurants}
+                        renderItem ={({ item }) =>  <RestaurantCard item={item} onTap={onTapRestaurant} /> } 
+                        keyExtractor={(item) => `${item._id}`}
+                    />
+                    <View>
+                        <Text style={{fontSize: 25, fontWeight: '600', color: '#f15b5d', marginLeft: 20 }}> 
+                            30 Minutes Foods
+                        </Text>
+                    </View>
+                    <FlatList 
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        data={foods}
+                        renderItem ={({ item }) =>  <RestaurantCard item={item} onTap={onTapFood} /> } 
+                        keyExtractor={(item) => `${item._id}`}
+                    />
+                </ScrollView>
             </View>
         </View>
     )
@@ -69,7 +137,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    topLocation: { 
+    location: { 
         marginTop: 50, 
         flex: 4, 
         backgroundColor: 'white', 
@@ -78,6 +146,14 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         justifyContent: 'center', 
         flexDirection: 'row'
+    },
+    viewSort: { 
+        display: 'flex', 
+        height: 60, 
+        justifyContent: 'space-around', 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        marginLeft: 4
     }
 })
 
@@ -86,4 +162,4 @@ const mapToStateProps = (state: ApplicationState) => ({
     shoppingReducer: state.shoppingReducer
 })
 
-export const Home = connect(mapToStateProps, { onAvailability,  onSearchFoods })(_Home)
+export const HomeScreen = connect(mapToStateProps, { onAvailability,  onSearchFoods })(_Home)
