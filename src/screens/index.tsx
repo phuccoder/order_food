@@ -1,2 +1,5 @@
-export { Home } from './Home'
-export { Landing } from './Landing'
+export * from './Home'
+export * from './Landing'
+export * from './Search'
+export * from './Restaurant'
+export * from './FoodDetail'
