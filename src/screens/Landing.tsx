@@ -132,4 +132,4 @@ const mapToStateProps = (state: ApplicationState) => ({
     userReducer: state.userReducer
 })
 
-export const Landing = connect(mapToStateProps, { onUpdateLocation })(_Landing)
+export const LandingScreen = connect(mapToStateProps, { onUpdateLocation })(_Landing)
