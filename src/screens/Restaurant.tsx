@@ -29,7 +29,7 @@ interface RestaurantProps {
 
 const _Restaurant: FC<RestaurantProps> = (props) => {
 
-    const { getParam, goBack } = props.navigation;
+    const { getParam, goBack } = props.navigation
 
     const restaurant = getParam('restaurant') as Restaurant
 
@@ -71,7 +71,13 @@ const _Restaurant: FC<RestaurantProps> = (props) => {
                 <FlatList 
                     showsVerticalScrollIndicator={false}
                     data={restaurant.foods}
-                    renderItem={({ item}) => <FoodCard item={checkExistence(item, Cart)}  onTap={onTapFood}  onUpdateCart={props.onUpdateCart}/>}
+                    renderItem={({ item}) => 
+                        <FoodCard 
+                            item={checkExistence(item, Cart)}  
+                            onTap={onTapFood}  
+                            onUpdateCart={props.onUpdateCart}
+                        />
+                    }
                     keyExtractor={(item) => `${item._id}`}
                 />
             </View>
