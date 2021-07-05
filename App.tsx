@@ -5,11 +5,13 @@ import {
 } from 'react-native'
 
 import { 
+  CartScreen,
   FoodDetailScreen,
   HomeScreen,
   LandingScreen,
   RestaurantScreen,
-  SearchScreen 
+  SearchScreen,
+  LoginScreen
 } from './src/screens'
 
 import { Provider } from 'react-redux'
@@ -66,8 +68,8 @@ const switchNavigator = createSwitchNavigator({
     },
     Cart: {
       screen: createStackNavigator({
-        CartPage: HomeScreen,
-        LoginPage: HomeScreen
+        CartPage: CartScreen,
+        LoginPage: LoginScreen
       }, {
         defaultNavigationOptions: {
           headerShown: false
@@ -84,7 +86,7 @@ const switchNavigator = createSwitchNavigator({
     Account: {
       screen: createStackNavigator({
         AccountPage: HomeScreen,
-        LoginPage: HomeScreen
+        LoginPage: LoginScreen
       }, {
         defaultNavigationOptions: {
           headerShown: false
