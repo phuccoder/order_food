@@ -27,10 +27,8 @@ export interface UserLoginAction {
 
 export type UserAction = UpdateLocationAction | UserErrorAction | UpdateCartAction | UserLoginAction
 
-// User Actions trigger from Components
-
 export const onUpdateLocation = (location: Address) => {
-    return async ( dispatch: Dispatch<UserAction>) => {
+    return async ( dispatch: Dispatch<UserAction> ) => {
         try {
             const locationString = JSON.stringify(location)
             await AsyncStorage.setItem('user_location', locationString)
@@ -49,7 +47,7 @@ export const onUpdateLocation = (location: Address) => {
 }
 
 export const onUpdateCart = (item: FoodModel) => {
-    return async ( dispatch: Dispatch<UserAction>) => {
+    return async ( dispatch: Dispatch<UserAction> ) => {
         dispatch({
             type: 'ON_UPDATE_CART',
             payload: item
@@ -59,7 +57,7 @@ export const onUpdateCart = (item: FoodModel) => {
 }
 
 export const OnUserLogin = (email: string, password: string) => {
-    return async ( dispatch: Dispatch<UserAction>) => {
+    return async ( dispatch: Dispatch<UserAction> ) => {
         try {
             const response = await axios.post<string>(`${BASE_URL}user/login`, {
                 email,
@@ -86,7 +84,7 @@ export const OnUserLogin = (email: string, password: string) => {
 }
 
 export const OnUserSignUp = (email: string, phone: string ,password: string) => {
-    return async ( dispatch: Dispatch<UserAction>) => {
+    return async ( dispatch: Dispatch<UserAction> ) => {
         try {
             const response = await axios.post<string>(`${BASE_URL}user/signup`, {
                 email,
