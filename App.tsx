@@ -11,7 +11,8 @@ import {
   LandingScreen,
   RestaurantScreen,
   SearchScreen,
-  LoginScreen
+  LoginScreen,
+  OrderScreen
 } from './src/screens'
 
 import { Provider } from 'react-redux'
@@ -69,7 +70,8 @@ const switchNavigator = createSwitchNavigator({
     Cart: {
       screen: createStackNavigator({
         CartPage: CartScreen,
-        LoginPage: LoginScreen
+        LoginPage: LoginScreen,
+        OrderPage: OrderScreen
       }, {
         defaultNavigationOptions: {
           headerShown: false
