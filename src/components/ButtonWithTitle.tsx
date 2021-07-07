@@ -6,17 +6,26 @@ interface ButtonProps {
     width: number,
     height: number,
     title: string,
-    isNoBg?: boolean
+    isNoBg?: boolean,
+    disable?: boolean
 }
 
-export const ButtonWithTitle: FC<ButtonProps> = ({ onTap, width, height, title, isNoBg = false }) => {
+export const ButtonWithTitle: FC<ButtonProps> = ({ 
+    onTap, 
+    width, 
+    height, 
+    title, 
+    isNoBg = false, 
+    disable =false 
+}) => {
     if (isNoBg) {
         return (
             <TouchableOpacity 
                 style={[styles.btn, { width, height, backgroundColor:'transparent' } ]} 
                 onPress={() =>  onTap()}
+                disabled={disable}
             >
-                <Text style={{ fontSize: 16, color: '#3980D9'}}>
+                <Text style={{ fontSize: 16, color: disable ? '#6F6F6F' : '#3980D9' }}>
                     {title}
                 </Text>
             </TouchableOpacity>
