@@ -9,9 +9,15 @@ interface TextFieldProps {
     placeholder: string
     isSecure?: boolean
     onTextChange: Function
+    isOtp?: boolean
 }
 
-export const TextField: FC<TextFieldProps> = ({ placeholder, isSecure = false, onTextChange }) => {
+export const TextField: FC<TextFieldProps> = ({ 
+    placeholder, 
+    isSecure = false, 
+    onTextChange,
+    isOtp =false
+}) => {
 
     const [isPassword, setIsPassword] = useState(false)
 
@@ -19,17 +25,31 @@ export const TextField: FC<TextFieldProps> = ({ placeholder, isSecure = false, o
         setIsPassword(isSecure)
     }, [])
 
-    return (
-        <View style={styles.container}>
-            <TextInput
-                placeholder={placeholder}
-                autoCapitalize="none"
-                secureTextEntry={isPassword}
-                onChangeText={(text) => onTextChange(text)}
-                style={styles.textField}
-            />
-        </View>
-    )
+    if (isOtp) {
+        return (
+            <View style={styles.container}>
+                <TextInput
+                    placeholder={placeholder}
+                    autoCapitalize="none"
+                    onChangeText={(text) => onTextChange(text)}
+                    style={styles.otpTextField}
+                    maxLength={6}
+                />
+            </View>
+        )
+    } else {
+        return (
+            <View style={styles.container}>
+                <TextInput
+                    placeholder={placeholder}
+                    autoCapitalize="none"
+                    secureTextEntry={isPassword}
+                    onChangeText={(text) => onTextChange(text)}
+                    style={styles.textField}
+                />
+            </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
@@ -51,5 +71,12 @@ const styles = StyleSheet.create({
         height: 50,
         fontSize: 20,
         color: '#000'
+    },
+    otpTextField: {
+        flex: 1,
+        height: 50,
+        fontSize: 30,
+        color: '#000',
+        textAlign: 'center'
     }
 })
