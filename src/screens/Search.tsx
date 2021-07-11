@@ -1,7 +1,8 @@
 import React, { useState, FC } from 'react'
 import { 
     StyleSheet, 
-    View
+    View,
+    FlatList
 } from 'react-native'
 
 import { 
@@ -14,12 +15,11 @@ import {
 
 import { connect } from 'react-redux'
 import { ButtonWithIcon, FoodCard, SearchBar } from '../components'
-import { FlatList } from 'react-native-gesture-handler'
 import { checkExistence, useNavigation } from '../utils'
 
-interface SearchScreenProps{ 
-    userReducer: UserState,
-    shoppingReducer: ShoppingState,
+interface SearchScreenProps { 
+    userReducer: UserState
+    shoppingReducer: ShoppingState
     onUpdateCart: Function
 }
 
@@ -29,13 +29,13 @@ const _Search: FC<SearchScreenProps> = (props) => {
 
     const [isEditing, setIsEditing] = useState(false)
     const [keyword, setKeyword] = useState('')
+    
+    const { Cart } = props.userReducer
     const { availableFoods } = props.shoppingReducer
 
     const onTapFood = (item: FoodModel) => {    
         navigate('FoodDetailPage', { food: item})
     }
-
-    const { Cart } = props.userReducer
 
     return (
         <View style={styles.container}>
@@ -58,14 +58,13 @@ const _Search: FC<SearchScreenProps> = (props) => {
                 <FlatList 
                     showsVerticalScrollIndicator={false}
                     data={ 
-                        isEditing 
-                        ? 
+                        isEditing ? 
                         availableFoods.filter((item) => {
                             return item.name.includes(keyword)
-                        })
+                        }) 
                         : availableFoods
                     }
-                    renderItem={({ item}) => 
+                    renderItem={({ item }) => 
                         <FoodCard 
                             onTap={onTapFood} 
                             item={checkExistence(item, Cart)} 
@@ -93,10 +92,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center', 
         alignItems: 'center'
     },
-    footer: { 
-        flex: 1, 
-        backgroundColor: 'cyan'
-    },
     button: { 
         display: 'flex', 
         height: 60, 
@@ -112,4 +107,4 @@ const mapStateToProps = (state: ApplicationState) => ({
     userReducer: state.userReducer
 })
 
-export const SearchScreen = connect(mapStateToProps, {onUpdateCart})(_Search)
+export const SearchScreen = connect(mapStateToProps, { onUpdateCart })(_Search)
