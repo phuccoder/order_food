@@ -4,10 +4,10 @@ import {
     View, 
     Text, 
     ImageBackground, 
-    Dimensions 
+    Dimensions,
+    FlatList
 } from 'react-native'
 
-import { FlatList } from 'react-native-gesture-handler'
 import { ButtonWithIcon, FoodCard } from '../components'
 import { connect } from 'react-redux'
 
@@ -29,14 +29,13 @@ interface RestaurantProps {
 
 const _Restaurant: FC<RestaurantProps> = (props) => {
 
-    const { getParam, goBack } = props.navigation
-
-    const restaurant = getParam('restaurant') as Restaurant
-
     const { navigate } = useNavigation()
-
+    
+    const { getParam, goBack } = props.navigation
     const { Cart } = props.userReducer
 
+    const restaurant = getParam('restaurant') as Restaurant
+    
     const onTapFood = (item: FoodModel) => {
         navigate('FoodDetailPage', { food: item })
     }
@@ -71,7 +70,7 @@ const _Restaurant: FC<RestaurantProps> = (props) => {
                 <FlatList 
                     showsVerticalScrollIndicator={false}
                     data={restaurant.foods}
-                    renderItem={({ item}) => 
+                    renderItem={({ item }) => 
                         <FoodCard 
                             item={checkExistence(item, Cart)}  
                             onTap={onTapFood}  
@@ -88,8 +87,7 @@ const _Restaurant: FC<RestaurantProps> = (props) => {
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#F2F2F2'},
     navigation: { flex: 1, marginTop: 43, paddingLeft: 10, flexDirection: 'row', alignItems: 'center' },
-    body: { flex: 11, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: '#FFF', },
-    footer: { flex: 1, backgroundColor: 'cyan' }
+    body: { flex: 11, justifyContent: 'flex-start', alignItems: 'center', backgroundColor: '#FFF' }
 })
 
 const mapToStateProps = (state: ApplicationState) => ({
