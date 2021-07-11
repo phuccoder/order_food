@@ -12,7 +12,10 @@ import {
   RestaurantScreen,
   SearchScreen,
   LoginScreen,
-  OrderScreen
+  OrderScreen,
+  OrderDetailScreen,
+  AccountScreen,
+  OfferScreen
 } from './src/screens'
 
 import { Provider } from 'react-redux'
@@ -53,7 +56,7 @@ const switchNavigator = createSwitchNavigator({
     },
     Offer: {
       screen: createStackNavigator({
-        OfferPage: HomeScreen
+        OfferPage: OfferScreen
       }, {
         defaultNavigationOptions: {
           headerShown: false
@@ -71,7 +74,8 @@ const switchNavigator = createSwitchNavigator({
       screen: createStackNavigator({
         CartPage: CartScreen,
         LoginPage: LoginScreen,
-        OrderPage: OrderScreen
+        OrderPage: OrderScreen,
+        OrderDetailPage: OrderDetailScreen
       }, {
         defaultNavigationOptions: {
           headerShown: false
@@ -87,8 +91,10 @@ const switchNavigator = createSwitchNavigator({
     },
     Account: {
       screen: createStackNavigator({
-        AccountPage: HomeScreen,
-        LoginPage: LoginScreen
+        AccountPage: AccountScreen,
+        LoginPage: LoginScreen,
+        ViewOrderFromAccountPage: OrderScreen,
+        OrderDetailPage: OrderDetailScreen
       }, {
         defaultNavigationOptions: {
           headerShown: false
@@ -105,7 +111,7 @@ const switchNavigator = createSwitchNavigator({
   })
 })
 
-const AppNavigation = createAppContainer(switchNavigator);
+const AppNavigation = createAppContainer(switchNavigator)
 
 export default function App() {
   return (
