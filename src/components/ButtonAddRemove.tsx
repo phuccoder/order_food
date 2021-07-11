@@ -21,10 +21,7 @@ export const ButtonAddRemove: FC<ButtonProps> = ({ onAdd, qty, onRemove }) => {
                         {qty}
                     </Text>
                 </View>
-                <TouchableOpacity 
-                    style={styles.btnPlusMinus}
-                    onPress={() => onRemove()}
-                >
+                <TouchableOpacity style={styles.btnPlusMinus} onPress={() => onRemove()}>
                     <Text style={{ fontSize: 30, color: '#f15b5d'}}>
                         -
                     </Text>
@@ -34,7 +31,9 @@ export const ButtonAddRemove: FC<ButtonProps> = ({ onAdd, qty, onRemove }) => {
     } else {
         return (
             <TouchableOpacity style={styles.btn} onPress={() => onAdd()}>
-                <Text style={{ fontSize: 18, color: '#FFF'}}> Add</Text>
+                <Text style={{ fontSize: 18, color: '#FFF'}}>
+                    Add
+                </Text>
             </TouchableOpacity>
             )
         }
