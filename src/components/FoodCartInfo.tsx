@@ -31,7 +31,7 @@ export const FoodCardInfo: FC<FoodCardInfoProps> = ({ item, onUpdateCart }) => {
                 </View>
                 <View style={{ display: 'flex', flex: 4, padding: 10, justifyContent:'space-around', alignItems: 'center'}}>
                     <Text style={{ fontSize: 18, fontWeight: '600', color: '#7C7C7C'}}>
-                        đ{item.price}
+                        {item.price}đ
                     </Text>
                     <ButtonAddRemove 
                         onAdd={() => {
