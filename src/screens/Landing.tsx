@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect , FC} from 'react'
+import React, { useState, useEffect , FC } from 'react'
 
 import { 
     View, 
@@ -12,8 +12,7 @@ import * as Location from 'expo-location'
 import { useNavigation } from '../utils'
 import { ApplicationState, onUpdateLocation, UserState } from '../redux'
 import { connect } from 'react-redux'
-
-const screenWidth = Dimensions.get('screen').width
+import { Alert } from 'react-native'
 
 interface LandingProps {
     userReducer: UserState,
@@ -24,45 +23,38 @@ const _Landing: FC<LandingProps> = (props) => {
 
     const { navigate } = useNavigation()
 
-    const { userReducer, onUpdateLocation } = props
+    const { onUpdateLocation } = props
 
     const [errorMsg, setErrorMsg] = useState('')
     const [address, setAddress] = useState<Location.Address>()
-    const [displayAddress, setDisplayAddress] = useState('Waiting for current location')
+    const [displayAddress, setDisplayAddress] = useState('Loading precise location')
 
     useEffect(() => {
-        (async () => {
-            let { status } = await Location.requestPermissionsAsync()
-
-            if (status !== 'granted') {
-                setErrorMsg('Permission to access location is not granted')
-            }
-
-            let location:any = await Location.getCurrentPositionAsync({})
-
-            const { coords } = location
-
-            if (coords) {
-                const { latitude, longitude } = coords
-                let addressResponse:any = await Location.reverseGeocodeAsync({ latitude, longitude })
-
-                for (let item of addressResponse) {
-                    setAddress(item)
-                    onUpdateLocation(item)
-                    let currentAddress = `${item.name},${item.street}, ${item.postalCode}, ${item.country}`
-                    setDisplayAddress(currentAddress)
-                    if (currentAddress.length > 0) {
-                        setTimeout(() => {
-                            navigate('homeStack')
-                        }, 2000)
+        (
+            async () => {
+                let { status } = await Location.requestPermissionsAsync()
+                let location = await Location.getCurrentPositionAsync({})
+                if (status !== 'granted') setErrorMsg('Permission to access location is not granted')
+                const { coords } = location
+                if (coords) {
+                    const { latitude, longitude } = coords
+                    let addressResponse = await Location.reverseGeocodeAsync({ latitude, longitude })
+                    for (let item of addressResponse) {
+                        setAddress(item)
+                        onUpdateLocation(item)
+                        let currentAddress = `${item.name},${item.street}, ${item.postalCode}, ${item.country}`
+                        setDisplayAddress(currentAddress)
+                        if (currentAddress.length > 0) {
+                            setTimeout(() => {
+                                navigate('homeStack')
+                            }, 1000)
+                        }
+                        return
                     }
-                    return
                 }
+                else Alert.alert('Error', `Cannot get precise location. Detail: ${errorMsg}`)
             }
-            else {
-                //notify user something went wrong with location
-            }
-        })()
+        ) ()
     }, [])
 
     return (
@@ -105,7 +97,7 @@ const styles = StyleSheet.create({
         height: 120
     },
     addressContainer: {
-        width: screenWidth - 100,
+        width: Dimensions.get('screen').width - 100,
         borderBottomColor: 'red',
         borderBottomWidth: 0.5,
         padding: 5,
