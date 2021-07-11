@@ -1,4 +1,4 @@
-import React, {useState, FC } from 'react'
+import React, { useState, useEffect, FC } from 'react'
 import { 
     StyleSheet, 
     View, 
@@ -9,9 +9,6 @@ import {
     ActivityIndicator
 } from 'react-native'
 
-import moment from 'moment'
-import { connect } from 'react-redux'
-
 import { 
     ApplicationState,
     UserState,
@@ -19,7 +16,10 @@ import {
     onCancelOrder,
     onGetOrder
 } from '../redux'
-import { FoodCard, ButtonWithTitle, ButtonWithIcon } from '../components'
+
+import moment from 'moment'
+import { connect } from 'react-redux'
+import { FoodCard, ButtonWithTitle, ButtonWithIcon, MapCustom } from '../components'
 
 interface OrderDetailScreenProps { 
     userReducer: UserState
@@ -37,6 +37,12 @@ const _OrderDetail: FC<OrderDetailScreenProps> = (props) => {
     const [isLoading, setIsLoading] = useState(false)
 
     const order = getParam('order') as OrderModel
+
+    useEffect(() => {
+        props.onGetOrder(user)
+        setIsLoading(true)
+        setTimeout(() => setIsLoading(false), 1500)
+    }, [])
 
     const headerDetail = () => {
         return (
@@ -67,20 +73,11 @@ const _OrderDetail: FC<OrderDetailScreenProps> = (props) => {
         } else {
             return (
                 <View>
-                    <View 
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            margin: 10,
-                            alignItems: 'center',
-                            height: 300,
-                            backgroundColor: 'gray',
-                            borderRadius: 10
-                        }}
-                    >
-                        <Text>
-                            Map view go here...
-                        </Text>
+                    <View>
+                        <MapCustom 
+                            width={Dimensions.get('screen').width-20} 
+                            height={300}
+                        />
                     </View>
                     <View style={{ marginBottom: 20 }}>
                         <ButtonWithTitle
@@ -106,7 +103,7 @@ const _OrderDetail: FC<OrderDetailScreenProps> = (props) => {
                     onPress:() => {
                         setIsLoading(true)
                         props.onCancelOrder(order, user)
-                        setTimeout(() => props.onGetOrder(user), 1000)
+                        setTimeout(() => props.onGetOrder(user), 500)
                         setTimeout(() => setIsLoading(false), 3000)
                         setTimeout(() => goBack(), 3500)
                     }, 
@@ -119,22 +116,22 @@ const _OrderDetail: FC<OrderDetailScreenProps> = (props) => {
     return (
         <View style={styles.container}>
             {isLoading &&
-                        <View 
-                            style={{ 
-                                position: 'absolute',
-                                left: 0,
-                                right: 0,
-                                top: 0,
-                                bottom: 0,
-                                alignItems: 'center',
-                                justifyContent: 'center', 
-                                zIndex: 1,
-                                backgroundColor: '#rgba(0, 0, 0, 0.5)'
-                            }}
-                        >
-                            <ActivityIndicator size="large" />
-                        </View>
-                }
+                <View 
+                    style={{ 
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        alignItems: 'center',
+                        justifyContent: 'center', 
+                        zIndex: 1,
+                        backgroundColor: '#rgba(0, 0, 0, 0.5)'
+                    }}
+                >
+                    <ActivityIndicator size="large" />
+                </View>
+            }
             <View style={styles.navigation}> 
                 <View style={styles.viewMyCart}>
                     <ButtonWithIcon
