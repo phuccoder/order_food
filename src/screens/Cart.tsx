@@ -12,8 +12,6 @@ import {
     Alert
 } from 'react-native'
 
-import { connect } from 'react-redux'
-
 import { 
     ApplicationState, 
     ShoppingState, 
@@ -23,10 +21,10 @@ import {
     onApplyOffer
 } from '../redux'
 
+import { connect } from 'react-redux'
 import { FoodCardInfo, ButtonWithTitle } from '../components'
-import PaymentTypePopup from 'react-native-raw-bottom-sheet'
-
 import { checkExistence, useNavigation } from '../utils'
+import PaymentTypePopup from 'react-native-raw-bottom-sheet'
 
 interface CartScreenProps { 
     userReducer: UserState
@@ -109,20 +107,20 @@ const _Cart: FC<CartScreenProps> = (props) => {
                 }}
             >
                 {isLoading &&
-                        <View 
-                            style={{ 
-                                position: 'absolute',
-                                left: 0,
-                                right: 0,
-                                top: 0,
-                                bottom: 0,
-                                alignItems: 'center',
-                                justifyContent: 'center', 
-                                zIndex: 1,
-                                backgroundColor: '#rgba(0, 0, 0, 0.2)'
-                            }}
-                        >
-                            <ActivityIndicator size="large" />
+                    <View 
+                        style={{ 
+                            position: 'absolute',
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                            alignItems: 'center',
+                            justifyContent: 'center', 
+                            zIndex: 1,
+                            backgroundColor: '#rgba(0, 0, 0, 0.2)'
+                        }}
+                    >
+                        <ActivityIndicator size="large" />
                         </View>
                 }
                 <View style={styles.viewPayment}>
