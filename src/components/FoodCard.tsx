@@ -1,19 +1,20 @@
 import React, { FC } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image, Dimensions } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, Image, Dimensions } from 'react-native'
 import { FoodModel } from '../redux'
 import { ButtonAddRemove } from './ButtonAddRemove'
 
 interface FoodCardProps { 
-    item: FoodModel,
-    onTap: Function,
+    item: FoodModel
+    onTap: Function
     onUpdateCart: Function
+    quantity?: number
 }
 
-export const FoodCard: FC<FoodCardProps> = ({ item, onTap, onUpdateCart }) => {
+export const FoodCard: FC<FoodCardProps> = ({ item, onTap, onUpdateCart, quantity }) => {
 
     const didUpdateCart = (unit: number) => {
-        item.unit = unit;
-        onUpdateCart(item);
+        item.unit = unit
+        onUpdateCart(item)
     }
 
     return (
@@ -27,24 +28,37 @@ export const FoodCard: FC<FoodCardProps> = ({ item, onTap, onUpdateCart }) => {
                 style={{ display: 'flex', flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}
             >
                 <View style={{ display: 'flex', flex: 7, padding: 10}}>
-                    <Text>{item.name}</Text>
-                    <Text>{item.category}</Text>
+                    <Text style={{ fontSize: 18 , marginBottom: 10}}>
+                        {item.name}
+                    </Text>
+                    <Text>
+                        {item.category}
+                    </Text>
+                    <Text>
+                        Estimate time: {item.readyTime}
+                    </Text>
                 </View>
                 <View style={{ display: 'flex', flex: 5, padding: 10, justifyContent:'space-around', alignItems: 'center'}}>
                     <Text style={{ fontSize: 18, fontWeight: '600', color: '#7C7C7C'}}>
-                        ₹{item.price}
+                        {item.price.toFixed(2)}đ
                     </Text>
-                    <ButtonAddRemove 
-                        onAdd={() => {
-                            let unit = isNaN(item.unit) ? 0 : item.unit
-                            didUpdateCart( unit + 1)
-                        }} 
-                        onRemove={() => {
-                            let unit = isNaN(item.unit) ? 0 : item.unit
-                            didUpdateCart( unit > 0 ? unit - 1 : unit)
-                        }} 
-                        qty={item.unit}
-                    />
+                    {quantity !== undefined ?
+                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                            Qty: {quantity}
+                        </Text>
+                    :
+                        <ButtonAddRemove 
+                            onAdd={() => {
+                                let unit = isNaN(item.unit) ? 0 : item.unit
+                                didUpdateCart( unit + 1)
+                            }} 
+                            onRemove={() => {
+                                let unit = isNaN(item.unit) ? 0 : item.unit
+                                didUpdateCart( unit > 0 ? unit - 1 : unit)
+                            }}
+                            qty={item.unit}
+                        />
+                    }
                 </View>
             </TouchableOpacity> 
     </View>
@@ -64,19 +78,5 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#E5E5E5',
         flexDirection: 'row'
-    },
-    navigation: { 
-        flex: 2, 
-        backgroundColor: 'red'
-    },
-    body: { 
-        flex: 10, 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        backgroundColor: 'yellow'
-    },
-    footer: { 
-        flex: 1, 
-        backgroundColor: 'cyan'
     }
 })
