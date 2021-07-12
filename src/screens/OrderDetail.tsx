@@ -76,7 +76,8 @@ const _OrderDetail: FC<OrderDetailScreenProps> = (props) => {
                     <View>
                         <MapCustom 
                             width={Dimensions.get('screen').width-20} 
-                            height={300}
+                            height={350}
+                            orderID={order.orderID}
                         />
                     </View>
                     <View style={{ marginBottom: 20 }}>
